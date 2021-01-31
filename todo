@@ -1,0 +1,4 @@
+Flesh out main app component to list the todos
+Create a form which submits post to create a new todos
+Create an update option to change the todo status
+Create a delete option to delete a todo

@@ -1,0 +1,19 @@
+{
+  "todos": [
+    {
+      "id": 0,
+      "name": "Create to do app again.",
+      "completed": false
+    },
+    {
+      "name": "Something else",
+      "completed": true,
+      "id": 3
+    },
+    {
+      "name": "Something different",
+      "completed": false,
+      "id": 4
+    }
+  ]
+}

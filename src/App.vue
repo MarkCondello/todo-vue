@@ -1,18 +1,78 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h2>You have completed {{ doneCount }} todos.</h2>
+    <div>
+      <input type="text" v-model="title"/>
+      <button @click="createToDo">Create To Do</button>
+    </div>
+    <ul
+      @drop="moveToDo"
+      @dragover.prevent
+      @dragenter.prevent
+    >
+    <!-- Need to add the drop event above to list items instead and pass the index-->
+      <li 
+      v-for="(todo, id) in todos" 
+      :key="id"
+      draggable
+      @dragstart="pickupTodo($event, id)"
+      >
+        <input type="checkbox" :checked="todo.completed" @change="changeStatus(todo)" />
+        <span>{{todo.name}}</span>
+        <button @click="deleteToDo(todo.id)">
+          &times;
+        </button>
+      </li>
+
+    </ul>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
-export default {
+import { mapState, mapGetters } from 'vuex'; 
+ export default {
   name: 'App',
-  components: {
-    HelloWorld
-  }
+  data() {
+    return {
+      title: null,
+      toDoIndexDragged: null,
+    }
+  },
+  created() {
+    this.$store.dispatch('getToDos')
+  },
+  computed: { 
+    ...mapState(['todos']), 
+    ...mapGetters({doneCount: 'doneToDosCount'})
+  },
+  methods: {
+    pickupTodo(e, toDoId){
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.dropEffect = 'move';
+      console.log('pickupToDO: ', {toDoId})
+      this.toDoIndexDragged = toDoId;
+      //datatransfer not working...
+      //e.dataTransfer.setData('todo-id', toDoId);
+    },
+    moveToDo(){
+      //const toDoId = e.dataTransfer.getData('todo-id');
+      //add droppedOnTaskIndex to payload below
+       this.$store.commit('MOVE_TODO', {taskIndex : this.toDoIndexDragged, })
+    },
+    changeStatus(todo){
+      let status = !todo.completed;
+      this.$store.dispatch('updateToDoStatus', { id: todo.id, status } );
+    },
+    deleteToDo(id){
+      this.$store.dispatch('deleteToDo', id)
+    },
+    createToDo(){
+      if(this.title.length > 3){
+        this.$store.dispatch('createToDo', this.title);
+        this.title = null;
+      }
+    }
+  },
 }
 </script>
 
