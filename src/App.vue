@@ -5,17 +5,17 @@
       <input type="text" v-model="title"/>
       <button @click="createToDo">Create To Do</button>
     </div>
-    <ul
-      @drop="moveToDo"
-      @dragover.prevent
-      @dragenter.prevent
-    >
+    <ul>
     <!-- Need to add the drop event above to list items instead and pass the index-->
       <li 
       v-for="(todo, id) in todos" 
       :key="id"
       draggable
       @dragstart="pickupTodo($event, id)"
+      
+      @drop="moveToDo(id)"
+      @dragover.prevent
+      @dragenter.prevent
       >
         <input type="checkbox" :checked="todo.completed" @change="changeStatus(todo)" />
         <span>{{todo.name}}</span>
@@ -54,10 +54,9 @@ import { mapState, mapGetters } from 'vuex';
       //datatransfer not working...
       //e.dataTransfer.setData('todo-id', toDoId);
     },
-    moveToDo(){
+    moveToDo(id){
       //const toDoId = e.dataTransfer.getData('todo-id');
-      //add droppedOnTaskIndex to payload below
-       this.$store.commit('MOVE_TODO', {taskIndex : this.toDoIndexDragged, })
+       this.$store.commit('MOVE_TODO', {taskIndex : this.toDoIndexDragged, droppedOnTaskIndex: id})
     },
     changeStatus(todo){
       let status = !todo.completed;

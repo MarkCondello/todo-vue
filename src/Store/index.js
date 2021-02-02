@@ -26,12 +26,11 @@ export const store = new Vuex.Store({
         SET_TODO(state, todo){
             state.todos.push(todo);
         },
-        // Needs props to move within the column eg droppedOnTaskIndex
-        MOVE_TODO(state, taskIndex){
-            console.log({taskIndex})
+        MOVE_TODO(state, {taskIndex, droppedOnTaskIndex}){
             const taskToMove = state.todos.splice(taskIndex, 1)[0];
-             state.todos.unshift(taskToMove);
-            //console.log(taskToMove)
+            state.todos.splice(droppedOnTaskIndex, 0, taskToMove);
+            // Needs to persist state.
+
         },
     },
     actions: {
