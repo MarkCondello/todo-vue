@@ -12,7 +12,6 @@
       :key="id"
       draggable
       @dragstart="pickupTodo($event, id)"
-      
       @drop="moveToDo(id)"
       @dragover.prevent
       @dragenter.prevent
@@ -51,11 +50,8 @@ import { mapState, mapGetters } from 'vuex';
       e.dataTransfer.dropEffect = 'move';
       console.log('pickupToDO: ', {toDoId})
       this.toDoIndexDragged = toDoId;
-      //datatransfer not working...
-      //e.dataTransfer.setData('todo-id', toDoId);
     },
     moveToDo(id){
-      //const toDoId = e.dataTransfer.getData('todo-id');
        this.$store.commit('MOVE_TODO', {taskIndex : this.toDoIndexDragged, droppedOnTaskIndex: id})
     },
     changeStatus(todo){
