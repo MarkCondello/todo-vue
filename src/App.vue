@@ -1,37 +1,60 @@
 <template>
-  <div id="app">
-    <h2>You have completed {{ doneCount }} todos.</h2>
-    <div>
-      <input type="text" v-model="title"/>
-      <button @click="createToDo">Create To Do</button>
-    </div>
-    <ul>
-    <!-- Need to add the drop event above to list items instead and pass the index-->
-      <li 
-      v-for="(todo, id) in todos" 
-      :key="id"
-      draggable
-      @dragstart="pickupTodo($event, id)"
-      @drop="moveToDo(id)"
-      @dragover.prevent
-      @dragenter.prevent
-      >
-        <input type="checkbox" :checked="todo.completed" @change="changeStatus(todo)" />
-        <span>{{todo.name}}</span>
-        <button @click="deleteToDo(todo.id)">
-          &times;
-        </button>
-      </li>
+  <div id="app" >
+    <m-theme :customStyle="$root.material">
+      <header>
+        <!-- ToDo: Inc hamburger, keep icon link, search bar -->
+         <m-top-app-bar>
+          <template slot="navigation">
+            <m-icon-button icon="menu" />
+            <span slot="navigation">Keep</span>
+          </template>
+          <template slot="actions">     
+            <m-icon-button icon="refresh"/>
+            <m-icon-button icon="view_stream"/>
+            <m-icon-button icon="settings"/>
+          </template>
+         </m-top-app-bar>
+      </header>
+      <main>
+        <aside>
+          <!-- ToDo:Inc side menu eg remingers, labels, archive, trash options -->
+        </aside>
+        <div>
+          <!-- Split this out to its own component -->
+          <create-note></create-note>
 
-    </ul>
+        </div>
+      </main>
+  
+      <ul>
+         <li 
+        v-for="(todo, id) in todos" 
+        :key="id"
+        draggable
+        @dragstart="pickupTodo($event, id)"
+        @drop="moveToDo(id)"
+        @dragover.prevent
+        @dragenter.prevent
+        >
+          <input type="checkbox" :checked="todo.completed" @change="changeStatus(todo)" />
+          <span>{{todo.title}}</span>
+          <button @click="deleteToDo(todo.id)">
+            &times;
+          </button>
+        </li>
+
+      </ul>
+      </m-theme>
   </div>
 </template>
-
 <script>
-import { mapState, mapGetters } from 'vuex'; 
+
+import CreateNote from './components/CreateNote';
+import { mapState,   } from 'vuex'; 
  export default {
+   components: {CreateNote, },
   name: 'App',
-  data() {
+   data() {
     return {
       title: null,
       toDoIndexDragged: null,
@@ -42,9 +65,14 @@ import { mapState, mapGetters } from 'vuex';
   },
   computed: { 
     ...mapState(['todos']), 
-    ...mapGetters({doneCount: 'doneToDosCount'})
-  },
+   },
   methods: {
+
+    showNoteModal(){
+      
+    },
+
+
     pickupTodo(e, toDoId){
       e.dataTransfer.effectAllowed = 'move';
       e.dataTransfer.dropEffect = 'move';
@@ -76,8 +104,8 @@ import { mapState, mapGetters } from 'vuex';
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+ 
+ }
 </style>
+
+ 

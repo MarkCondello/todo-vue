@@ -12,27 +12,34 @@ const instance = axios.create({
 });
 
 export default {
+        // ToDo: Change ToDo to Note
+
     getToDos() {
         return instance.get('/todos');
     },
-
-    getToDo(id){
-        return instance.get(`/todos/${id}`);
+    getToDo(toDoId){
+        return instance.get(`/todos/${toDoId}`);
+    },
+    deleteToDo(toDoId){
+        return instance.delete(`/todos/${toDoId}`);
+    },
+    createToDo(toDoItem){
+        return instance.post('/todos', toDoItem)
     },
 
-    deleteToDo(id){
-        return instance.delete(`/todos/${id}`);
-    },
-
-    updateToDoStatus(id, status){
-        return instance.patch(`/todos/${id}`, {
+    // ToDo: Change Tasks to Lists
+    // I may need to split out task related enpoints to another service
+    updateToDoTaskStatus(toDoId, taskId, status){
+        return instance.patch(`/todos/${toDoId}/tasks/${taskId}`, {
+            // toggles current status
             completed: status,
         });
     },
-
-    createToDo(todo){
-        //Do I post to a list or a single model??? YES, post to a list
-        return instance.post('/todos', todo)
+    createToDoTask(toDoId, taskItem){
+        return instance.post(`/todos/${toDoId}/tasks`, taskItem)
+    },
+    deleteToDoTask(toDoId, taskId){
+        return instance.delete(`/todos/${toDoId}/tasks/${taskId}`)
     },
 
 }

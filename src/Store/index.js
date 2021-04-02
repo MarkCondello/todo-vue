@@ -12,14 +12,6 @@ export const store = new Vuex.Store({
         SET_TODOS(state, todos){
             state.todos = todos;
         },
-        UPDATE_TODO(state, updatedToDo){
-            state.todos = state.todos.map((todo)=>{
-                if(todo.id === updatedToDo.id){
-                    return updatedToDo;
-                }
-                return todo;
-             })
-        },
         DELETE_TODO(state, toDoId){
             state.todos = state.todos.filter(todo => todo.id !== toDoId)
         },
@@ -29,8 +21,23 @@ export const store = new Vuex.Store({
         MOVE_TODO(state, {taskIndex, droppedOnTaskIndex}){
             const taskToMove = state.todos.splice(taskIndex, 1)[0];
             state.todos.splice(droppedOnTaskIndex, 0, taskToMove);
-            // Needs to persist state.
+        },
 
+        // May want to split task related work to a module
+        UPDATE_TODO_TASK_STATUS(state, {toDoId, taskId}){
+            state.todos[toDoId].tasks = state.todos[toDoId].tasks.map((task)=>{
+                if(task.id === taskId){
+                    task.completed != task.completed;
+                    return task;
+                }
+                return task;
+             })
+        },
+        CREATE_TODO_TASK(state, {toDoId, taskItem}){
+            state.todos[toDoId].tasks.push(taskItem);
+        },
+        DELETE_TODO_TASK(state, {toDoId, taskId}){
+            state.todos[toDoId].tasks = state.todos[toDoId].tasks.filter(task=> task.id !== taskId)
         },
     },
     actions: {
@@ -43,15 +50,6 @@ export const store = new Vuex.Store({
                 console.error("Error: ", err)
             })
         },
-        updateToDoStatus({commit}, {id, status}){
-            ToDoService.updateToDoStatus(id, status)
-            .then(resp => {
-                commit('UPDATE_TODO', resp.data); 
-            })
-            .catch(err=> {
-                console.error("Error", err)
-            })
-        },
         deleteToDo({commit}, toDoId){
             ToDoService.deleteToDo(toDoId)
             .then(() => {
@@ -62,20 +60,49 @@ export const store = new Vuex.Store({
             })
         },
         createToDo({commit}, title){
-           const todo = {name: title, completed: false};
+           const todo = { name: title };
 
-           console.log({todo})
-            ToDoService.createToDo(todo)
+             ToDoService.createToDo(todo)
             .then(resp => {
                 commit("SET_TODO", resp.data);
             })
             .catch(err => {
                 console.error("Error: ", err)
             })
-        }
+        },
+
+        // May want to split task related work to a module
+        updateToDoTaskStatus({commit}, {toDoId, taskId, status}){
+            ToDoService.updateToDoTaskStatus(toDoId, taskId, status)
+            .then(resp => {
+                commit('UPDATE_TODO_TASK_STATUS', resp.data); 
+            })
+            .catch(err=> {
+                console.error("Error", err)
+            })
+        },
+        createToDoTask({commit}, {toDoId, taskItem}){
+            ToDoService.createToDo(toDoId, taskItem)
+            .then(resp => {
+                commit('CREATE_TODO_TASK', resp.data);
+            })
+            .catch(err=>{
+                console.error("Task Create Error", err)
+            })
+        },
+        deleteToDoTask({commit}, {toDoId, taskId}){
+            ToDoService.deleteToDoTask(toDoId, taskId)
+            .then(resp=>{
+                // Need to check this below, is it resp.data.id
+                commit('DELETE_TODO_TASK', resp.data.id)
+            })
+            .catch(err => console.error("DELETE ERROR", err))
+        },
+
     },
     getters: {
         getDoneToDos: (state)=>{
+            // This will no longer work...
             return state.todos.filter(todo=> todo.completed);
         },
         doneToDosCount: (state, getters) => {

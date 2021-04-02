@@ -2,7 +2,10 @@ New data structure for Google Keep clone
         /* todo: {
             id: int
             title: 'str',
-            type: checklist, list,
+            type: {
+                list: boolean,
+                checklist: boolean,
+            },
             pinned: boolean,
             archived: boolean,
             colour: 'str',
@@ -10,7 +13,6 @@ New data structure for Google Keep clone
             order: number,
             opened: boolean,
             selected: boolean,
-            toDo later:
             labels: [],
             images: [],
             tasks: [
@@ -18,7 +20,7 @@ New data structure for Google Keep clone
                     id: int
                     order: int,
                     name: 'str',
-                    checklist_properties : {
+                    checklist_props : {
                         is_parent: boolean (false if nesting level 2 or 3),
                         is_sub_parent: boolean (false if nesting level 3 or 1),
                         is_sub_sub_parent: boolean (false if nesting level 2 or 1),

@@ -2,18 +2,46 @@
   "todos": [
     {
       "id": 0,
-      "name": "Create to do app again.",
-      "completed": false
-    },
-    {
-      "name": "Something else",
-      "completed": true,
-      "id": 3
-    },
-    {
-      "name": "Something different",
-      "completed": false,
-      "id": 4
+      "title":  "Create Google Keep Clone",
+      "type": {
+          "list": true,
+          "checklist": false
+      },
+      "pinned": false,
+      "archived": false,
+      "colour": "",
+      "edited": "03/28/2021",
+      "order": 0,
+      "opened": false,
+      "selected": false,
+      "labels": [],
+      "images": [],
+      "tasks": [
+        {
+          "id": 0,
+          "order": 0,
+          "name": "Research the functionality",
+          "checklist_props" : {
+            "is_parent": false,
+            "is_sub_parent": false,
+            "is_sub_sub_parent": false,
+            "nesting_level": 1,
+            "completed": false
+          }
+        },
+        {
+          "id": 1,
+          "order": 1,
+          "name": "Plan the development steps",
+          "checklist_props" : {
+            "is_parent": false,
+            "is_sub_parent": false,
+            "is_sub_sub_parent": false,
+            "nesting_level": 1,
+            "completed": false
+          }
+        }
+      ]
     }
   ]
 }
