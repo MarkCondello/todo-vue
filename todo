@@ -1,5 +1,5 @@
 New data structure for Google Keep clone
-        /* todo: {
+        /* notes: {
             id: int
             title: 'str',
             type: {

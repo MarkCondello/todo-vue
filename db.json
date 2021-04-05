@@ -1,22 +1,22 @@
 {
-  "todos": [
+  "notes": [
     {
       "id": 0,
       "title":  "Create Google Keep Clone",
-      "type": {
-          "list": true,
-          "checklist": false
-      },
       "pinned": false,
       "archived": false,
-      "colour": "",
+      "color": "",
       "edited": "03/28/2021",
       "order": 0,
       "opened": false,
       "selected": false,
       "labels": [],
       "images": [],
-      "tasks": [
+      "type": {
+        "list": true,
+        "checklist": false
+      },
+      "list": [
         {
           "id": 0,
           "order": 0,
@@ -24,9 +24,8 @@
           "checklist_props" : {
             "is_parent": false,
             "is_sub_parent": false,
-            "is_sub_sub_parent": false,
             "nesting_level": 1,
-            "completed": false
+            "checked": false
           }
         },
         {
@@ -38,7 +37,7 @@
             "is_sub_parent": false,
             "is_sub_sub_parent": false,
             "nesting_level": 1,
-            "completed": false
+            "checked": false
           }
         }
       ]

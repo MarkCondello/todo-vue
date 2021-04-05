@@ -20,15 +20,14 @@
           <!-- ToDo:Inc side menu eg remingers, labels, archive, trash options -->
         </aside>
         <div>
-          <!-- Split this out to its own component -->
-          <create-note></create-note>
+           <create-note></create-note>
 
         </div>
       </main>
   
       <ul>
          <li 
-        v-for="(todo, id) in todos" 
+        v-for="(note, id) in notes" 
         :key="id"
         draggable
         @dragstart="pickupTodo($event, id)"
@@ -52,7 +51,7 @@
 import CreateNote from './components/CreateNote';
 import { mapState,   } from 'vuex'; 
  export default {
-   components: {CreateNote, },
+  components: {CreateNote, },
   name: 'App',
    data() {
     return {
@@ -61,40 +60,35 @@ import { mapState,   } from 'vuex';
     }
   },
   created() {
-    this.$store.dispatch('getToDos')
+    this.$store.dispatch('getNotes')
   },
   computed: { 
-    ...mapState(['todos']), 
+    ...mapState(['notes']), 
    },
   methods: {
 
-    showNoteModal(){
-      
-    },
-
-
-    pickupTodo(e, toDoId){
-      e.dataTransfer.effectAllowed = 'move';
-      e.dataTransfer.dropEffect = 'move';
-      console.log('pickupToDO: ', {toDoId})
-      this.toDoIndexDragged = toDoId;
-    },
-    moveToDo(id){
-       this.$store.commit('MOVE_TODO', {taskIndex : this.toDoIndexDragged, droppedOnTaskIndex: id})
-    },
-    changeStatus(todo){
-      let status = !todo.completed;
-      this.$store.dispatch('updateToDoStatus', { id: todo.id, status } );
-    },
-    deleteToDo(id){
-      this.$store.dispatch('deleteToDo', id)
-    },
-    createToDo(){
-      if(this.title.length > 3){
-        this.$store.dispatch('createToDo', this.title);
-        this.title = null;
-      }
-    }
+    // pickupTodo(e, toDoId){
+    //   e.dataTransfer.effectAllowed = 'move';
+    //   e.dataTransfer.dropEffect = 'move';
+    //   console.log('pickupToDO: ', {toDoId})
+    //   this.toDoIndexDragged = toDoId;
+    // },
+    // moveToDo(id){
+    //    this.$store.commit('MOVE_TODO', {taskIndex : this.toDoIndexDragged, droppedOnTaskIndex: id})
+    // },
+    // changeStatus(todo){
+    //   let status = !todo.completed;
+    //   this.$store.dispatch('updateToDoStatus', { id: todo.id, status } );
+    // },
+    // deleteToDo(id){
+    //   this.$store.dispatch('deleteToDo', id)
+    // },
+    // createToDo(){
+    //   if(this.title.length > 3){
+    //     this.$store.dispatch('createToDo', this.title);
+    //     this.title = null;
+    //   }
+    // }
   },
 }
 </script>
