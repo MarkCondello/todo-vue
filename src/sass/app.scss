@@ -16,8 +16,17 @@ body{
         position: relative;
     }
 
+    input[type="text"] {
+        width: 100%;
+        border: none;
+        font-size: 1rem;
 
- 
-    //  background-color: #202124;
-    // color: #e8eaed;
+        &:focus {
+            outline: none;
+        }
+
+        &.smaller {
+            font-size: .9rem;
+        }
+    }
  }
