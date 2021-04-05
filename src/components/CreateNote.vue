@@ -22,7 +22,7 @@
 
  
             <m-layout-grid v-if="editOptions">
-                <
+             
                 <m-layout-grid-inner>
                     <m-layout-grid-cell>
                         <m-icon-button icon="notification_important" title="Add reminder">
