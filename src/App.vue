@@ -21,23 +21,22 @@
         </aside>
         <div>
            <create-note></create-note>
-
         </div>
       </main>
   
       <ul>
-         <li 
+        <li 
         v-for="(note, id) in notes" 
         :key="id"
-        draggable
+        >
+        <!--         draggable
         @dragstart="pickupTodo($event, id)"
         @drop="moveToDo(id)"
         @dragover.prevent
-        @dragenter.prevent
-        >
-          <input type="checkbox" :checked="todo.completed" @change="changeStatus(todo)" />
-          <span>{{todo.title}}</span>
-          <button @click="deleteToDo(todo.id)">
+        @dragenter.prevent -->
+          <!-- <input type="checkbox" :checked="note.list.checked" @change="changeStatus(todo)" /> -->
+          <span>{{note.title}}</span>
+          <button @click="deleteNote(note.id)">
             &times;
           </button>
         </li>
@@ -64,9 +63,8 @@ import { mapState,   } from 'vuex';
   },
   computed: { 
     ...mapState(['notes']), 
-   },
+  },
   methods: {
-
     // pickupTodo(e, toDoId){
     //   e.dataTransfer.effectAllowed = 'move';
     //   e.dataTransfer.dropEffect = 'move';
@@ -77,18 +75,12 @@ import { mapState,   } from 'vuex';
     //    this.$store.commit('MOVE_TODO', {taskIndex : this.toDoIndexDragged, droppedOnTaskIndex: id})
     // },
     // changeStatus(todo){
-    //   let status = !todo.completed;
+    //   let status = !todo.checked;
     //   this.$store.dispatch('updateToDoStatus', { id: todo.id, status } );
     // },
-    // deleteToDo(id){
-    //   this.$store.dispatch('deleteToDo', id)
-    // },
-    // createToDo(){
-    //   if(this.title.length > 3){
-    //     this.$store.dispatch('createToDo', this.title);
-    //     this.title = null;
-    //   }
-    // }
+    deleteNote(id){
+      this.$store.dispatch('deleteNote', id)
+    },
   },
 }
 </script>

@@ -22,20 +22,22 @@ export default {
     deleteNote(noteId){
         return instance.delete(`/notes/${noteId}`);
     },
-    createNote(toDoItem){
-        return instance.post('/notes', toDoItem)
+    createNote(note){
+        return instance.post('/notes', note)
     },
 
      // I may need to split out task related enpoints to another service
     updateNoteListItemStatus(noteId, listId, status){
         return instance.patch(`/notes/${noteId}/list/${listId}`, {
-            // toggles checkbox
+            // toggles checkboxes
             checked: status,
         });
     },
-    createNoteList(noteId, taskItem){
-        return instance.post(`/notes/${noteId}/list`, taskItem)
+
+    createNoteList(noteId, list){
+        return instance.post(`/notes/${noteId}/list`, list)
     },
+
     deleteNoteList(noteId, listId){
         return instance.delete(`/notes/${noteId}/list/${listId}`)
     },

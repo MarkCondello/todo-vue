@@ -2,7 +2,7 @@
   "notes": [
     {
       "id": 0,
-      "title":  "Create Google Keep Clone",
+      "title": "Create Google Keep Clone",
       "pinned": false,
       "archived": false,
       "color": "",
@@ -18,29 +18,89 @@
       },
       "list": [
         {
-          "id": 0,
           "order": 0,
           "name": "Research the functionality",
-          "checklist_props" : {
-            "is_parent": false,
-            "is_sub_parent": false,
-            "nesting_level": 1,
-            "checked": false
-          }
+          "is_parent": false,
+          "is_sub_parent": false,
+          "nesting_level": 0,
+          "checked": false
         },
         {
-          "id": 1,
           "order": 1,
           "name": "Plan the development steps",
-          "checklist_props" : {
-            "is_parent": false,
-            "is_sub_parent": false,
-            "is_sub_sub_parent": false,
-            "nesting_level": 1,
-            "checked": false
-          }
+          "is_parent": false,
+          "is_sub_parent": false,
+          "nesting_level": 0,
+          "checked": false
         }
       ]
+    },
+    {
+      "title": "Test",
+      "pinned": false,
+      "color": "",
+      "edited": "03/28/2021",
+      "labels": [],
+      "type": {
+        "list": true,
+        "checklist": false
+      },
+      "list": "SOMETHING 123 LIST ITEM",
+      "selected": false,
+      "archived": false,
+      "opened": false,
+      "id": 1
+    },
+    {
+      "title": "",
+      "pinned": false,
+      "color": "",
+      "edited": "3/3/2021",
+      "labels": [],
+      "type": {
+        "list": true,
+        "checklist": false
+      },
+      "list": "somketjing",
+      "selected": false,
+      "archived": false,
+      "opened": false,
+      "id": 2
+    },
+    {
+      "title": "Checklist check",
+      "pinned": false,
+      "color": "",
+      "edited": "4/3/2021",
+      "labels": [],
+      "type": {
+        "list": false,
+        "checklist": true
+      },
+      "list": [
+        {
+          "order": 0,
+          "name": "test1",
+          "checked": false,
+          "is_parent": false,
+          "is_sub_parent": false,
+          "nesting_level": 0,
+          "hovered": false
+        },
+        {
+          "order": 0,
+          "name": "test2",
+          "checked": false,
+          "is_parent": false,
+          "is_sub_parent": false,
+          "nesting_level": 0,
+          "hovered": false
+        }
+      ],
+      "selected": false,
+      "archived": false,
+      "opened": false,
+      "id": 3
     }
   ]
 }

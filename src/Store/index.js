@@ -7,6 +7,7 @@ Vue.use(Vuex);
 export const store = new Vuex.Store({
     state: {
         notes: [],
+        date: new Date(),
     },
     mutations: {
         SET_NOTES(state, notes){
@@ -18,16 +19,16 @@ export const store = new Vuex.Store({
         SET_NOTE(state, note){
             state.notes.push(note);
         },
-        MOVE_NOTE(state, {noteIndex, droppedOnNoteIndex}){
-            const noteToMove = state.notes.splice(noteIndex, 1)[0];
-            state.notes.splice(droppedOnNoteIndex, 0, noteToMove);
-        },
+        // MOVE_NOTE(state, {noteIndex, droppedOnNoteIndex}){
+        //     const noteToMove = state.notes.splice(noteIndex, 1)[0];
+        //     state.notes.splice(droppedOnNoteIndex, 0, noteToMove);
+        // },
 
         // May want to split list related work to a module
         UPDATE_NOTE_LIST_STATUS(state, {noteId, listId}){
             state.notes[noteId].lists = state.notes[noteId].lists.map((list)=>{
                 if(list.id === listId){
-                    list.completed != list.completed;
+                    list.checked != list.checked;
                     return list;
                 }
                 return list;
@@ -60,10 +61,14 @@ export const store = new Vuex.Store({
             })
         },
         createNote({commit}, note){
+            note.selected = false;
+            note.archived = false;
+            note.opened = false;
+
             console.log("Note data: ", {note});
             NoteService.createNote(note)
             .then(resp => {
-                commit("SET_note", resp.data);
+                commit("SET_NOTE", resp.data);
             })
             .catch(err => {
                 console.error("Error: ", err)
@@ -102,7 +107,7 @@ export const store = new Vuex.Store({
     getters: {
         // getDonenotes: (state)=>{
         //     // This will no longer work...
-        //     return state.notes.filter(note=> note.completed);
+        //     return state.notes.filter(note=> note.checked);
         // },
         // donenotesCount: (state, getters) => {
         //     return getters.getDonenotes.length;
