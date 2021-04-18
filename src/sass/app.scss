@@ -21,6 +21,7 @@ body{
         width: 100%;
         border: none;
         font-size: 1rem;
+        background: transparent;
 
         &:focus {
             outline: none;
@@ -30,4 +31,39 @@ body{
             font-size: .9rem;
         }
     }
+
+    .red {
+        background-color: #5c2b29;
+        border-color: #5c2b29
+    }
+    .green {
+        background-color: #345920;
+        border-color: #345920
+    }
+    .blue {
+        background-color: #2d555e;
+        border-color: #2d555e
+    }
+
+    .color-palette-panel {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 10px;
+        flex-direction: row;
+        width: 110px;
+        top: -75px!important; // the m-menu-surface api does not work
+        a {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 1px solid inherit;
+            transition: border-color 1s;
+            margin:  5px;
+            &:hover {
+                transition: border-color 1s;
+                border-color: #fff;
+            }
+        }
+    }
+
  }

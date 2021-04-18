@@ -1,6 +1,5 @@
 <template>
-    <m-card>
- 
+    <m-card class="card" :class="note.color">
         <m-card-primary-action>
             <m-layout-grid style="width:100%;">
                 <template v-if="opened">
@@ -18,49 +17,21 @@
                     </m-layout-grid-inner>
                     <m-layout-grid-inner>
                         <m-layout-grid-cell :span="12">
-                            <!-- Should this be a textarea instead, if switching to checkboxes, we can split out each text linebreak into a checkbox line item -->
+                            <!-- ToDo: when switching to checkboxes, we can split out each linebreak and convert those into a checkbox line item -->
                             <textarea 
                                 v-if="note.type.list"
-                                ref="taskInput" 
+                                ref="listTextArea" 
                                 class="smaller" 
                                 v-model="note.list" 
                                 placeholder="Take a note...">
                             </textarea>
-                            <!-- ToDo: split this out to a seperate component?? -->
-                            <template v-if="note.type.checklist">
-                                <draggable :list="note.list">
-                                    <div v-for="(item, index) in note.list" style="display: flex; align-items:center; justify-content: space-between;" :key="index">
-                                        <div style="display: flex; align-items:center; justify-content: center; width: 100%;" 
-                                            @mouseover="item.hovered = true"
-                                            @mouseleave="item.hovered = false" >
-                                            <m-icon 
-                                                :icon="item.hovered ? 'drag_indicator' : ''" 
-                                                class="drag-icon"
-                                                title="Drag list item" 
-                                            />
-                                            <input 
-                                                type="checkbox"
-                                                v-model="item.checked"/>
-                                            <input 
-                                                class="smaller" 
-                                                v-model="item.name" 
-                                                type="text"
-                                                ref="field"
-                                                v-on:keyup.alt.down="focusFieldByIndex(index+1)" 
-                                                v-on:keyup.alt.up="focusFieldByIndex(index-1)" 
-                                                v-on:keyup.enter="addCheckListItem"
-                                                placeholder="List item..."/>
-                                        </div>
-                                        <m-icon-button 
-                                            icon="clear" 
-                                            title="Remove list item" 
-                                            class="material-icons-outlined"
-                                            @click="removeListItem(index)"
-                                        />
-                                        <!-- <nested-draggable :list="item.list" /> -->
-                                    </div>
-                                </draggable>
-                            </template>
+                            <checkList 
+                                ref="checkList"
+                                @remove-checklist-item="removeCheckListItem" 
+                                @add-checklist-item="addCheckListItem" 
+                                v-if="note.type.checklist" 
+                                :list-items="note.list">
+                            </checkList>
                         </m-layout-grid-cell>
                     </m-layout-grid-inner>
                  </template>
@@ -87,8 +58,31 @@
                 </m-icon-button>
                 <m-icon-button icon="person_add_alt_1" title="Add user" class="material-icons-outlined">
                 </m-icon-button>
-                <m-icon-button icon="palette" title="Colour palette" class="material-icons-outlined">
+
+                <m-icon-button 
+                icon="palette" 
+                title="Colour palette" 
+                class="material-icons-outlined"
+                @click="showPalette=true"
+                >
+                    <m-menu-anchor>
+                        <m-menu-surface 
+                            :open="showPalette" 
+                            class="color-palette-panel"
+                        >
+                            <!-- Convert this to a loop of the colorOptions -->
+                            <a 
+                            v-for="(color, index) in colorOptions"
+                            :key="index+color"
+                            :title="color" 
+                            @click.stop="showPalette=false; note.color=`${color}`"
+                            :class="color"></a>
+
+                            <!-- <button type="button" title="Blue" @click="note.color='blue'" class="blue"></button> -->
+                        </m-menu-surface>
+                    </m-menu-anchor>
                 </m-icon-button>
+
                 <m-icon-button icon="image" title="Add images" class="material-icons-outlined">
                 </m-icon-button>
                 <m-icon-button icon="archive" title="Add to archive" class="material-icons-outlined">
@@ -103,9 +97,10 @@
     </m-card>
 </template>
 <script>
-import draggable from 'vuedraggable'
-export default {
-    components:{draggable, },
+
+import checkList from './CheckList';
+ export default {
+    components:{ checkList},
     data() {
         return {
             note: {
@@ -121,6 +116,9 @@ export default {
                 list: null, //This mutable between string type and an array of objects
             },
             opened: false,
+            showPalette: false,
+            colorOptions : ['red', ' green', 'blue'],
+
         }
     },
     created(){},
@@ -152,44 +150,55 @@ export default {
                 this.note.type.checklist = true;
                 this.note.list = [];            
                 this.addCheckListItem();
-                return
+                return;
             }
             this.note.list = null;
             this.note.type.list = true; 
             this.note.type.checklist = false;
-        },
+        },  
         addCheckListItem(){
+            console.log("reached addCheckListItem")
             this.note.list.push({
-                "order": this.note.list.length ? this.note.list.length - 1 : 0,
                 "name": "",
                 "checked": false,
-                "is_parent": false,
-                "is_sub_parent": false,
-                "nesting_level": 0,
                 "hovered": false,
+                "focused": false,
                 //dragged???
+                "list": [
+                    {
+                        "name": "",
+                        "checked": false,
+                        "hovered": false,
+                        "list": [
+                            {
+                                "name": "",
+                                "checked": false,
+                                "hovered": false,
+                            }
+                        ],
+                    }
+                ],
             });
-            let index = this.note.list.length ? this.note.list.length - 1 : 0;
-            this.focusFieldByIndex(index);
+
+            //send this to child checklist component
+            this.$nextTick(()=>{
+                let index = this.note.list.length ? this.note.list.length - 1 : 0;
+                this.$refs.checkList.focusFieldByIndex(index)
+            })
+          //  this.focusFieldByIndex(index);
         },
-        focusFieldByIndex(index){ // use this method for alt up or down keys
-            this.$nextTick(()=>{ //add focus to the newly created checklist item
-                this.$refs.field[index].focus();  
-             }); 
-        },
-        removeListItem(index){
+         removeCheckListItem(index){
             this.note.list.splice(index, 1);
             if(!this.note.list.length){ 
-                this.addCheckListItem();
+                this.addCheckListItem();//ensure there is always a list item set
             }
         },
     },
     watch: {
         opened(value){
-            //TODO: Add the taskInput ref on the first checklist item
-            if(value && this.note.type.list){
+             if(value && this.note.type.list){
                 this.$nextTick(() => {
-                    this.$refs.taskInput.focus();
+                   this.$refs.listTextArea.focus();  
                 });
                 //need to check for click outside to close the options if so.
                 return;
@@ -199,8 +208,3 @@ export default {
     }
 }
 </script>
- <style>
- .drag-icon {
-     cursor: move;
- }
- </style>
