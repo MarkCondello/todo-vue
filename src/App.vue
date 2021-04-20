@@ -23,32 +23,39 @@
            <create-note></create-note>
         </div>
       </main>
-  
-      <ul>
-        <li 
-        v-for="(note, id) in notes" 
-        :key="id"
-        >
-        <!--         draggable
-        @dragstart="pickupTodo($event, id)"
-        @drop="moveToDo(id)"
-        @dragover.prevent
-        @dragenter.prevent -->
-          <!-- <input type="checkbox" :checked="note.list.checked" @change="changeStatus(todo)" /> -->
-          <span>{{note.title}}</span>
-          <button @click="deleteNote(note.id)">
-            &times;
-          </button>
-        </li>
 
-      </ul>
+      <div v-if="pinnedNotes.length" >
+        <p>PINNED</p>
+        <div class="notes-container">
+          <!-- noteCard component -->
+          <m-card :class="note.color" 
+            v-for="(note, id) in pinnedNotes" 
+            :key="id"
+            class="noteCard"
+            >
+              <span>{{note.title}}</span>
+          </m-card>
+        </div>
+      </div>
+      <div v-if="otherNotes.length" >
+        <p>OTHERS</p>
+        <div class="notes-container">
+          <m-card :class="note.color" 
+            v-for="(note, id) in otherNotes" 
+            :key="id"
+            class="noteCard"
+            >
+            <span>{{note.title}}</span>
+          </m-card>
+        </div>
+      </div>
       </m-theme>
   </div>
 </template>
 <script>
 
 import CreateNote from './components/CreateNote';
-import { mapState,   } from 'vuex'; 
+import { mapState,  mapGetters } from 'vuex'; 
  export default {
   components: {CreateNote, },
   name: 'App',
@@ -62,7 +69,9 @@ import { mapState,   } from 'vuex';
     this.$store.dispatch('getNotes')
   },
   computed: { 
+    // Dont need mapState to get notes
     ...mapState(['notes']), 
+    ...mapGetters(['pinnedNotes', 'otherNotes'])
   },
   methods: {
     // pickupTodo(e, toDoId){
@@ -78,6 +87,8 @@ import { mapState,   } from 'vuex';
     //   let status = !todo.checked;
     //   this.$store.dispatch('updateToDoStatus', { id: todo.id, status } );
     // },
+
+    // This should be added to the note card component
     deleteNote(id){
       this.$store.dispatch('deleteNote', id)
     },

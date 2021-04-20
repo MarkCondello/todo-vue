@@ -65,5 +65,16 @@ body{
             }
         }
     }
+ }
+
+ .notes-container {
+     display: flex;
+ }
+ .noteCard {
+
+    //ToDo: Need to set up breakpoints
+    //large screens 1200 >
+    width: 20%;
+    margin:5px;
 
  }

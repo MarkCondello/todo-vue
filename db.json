@@ -3,9 +3,9 @@
     {
       "id": 0,
       "title": "Create Google Keep Clone",
-      "pinned": false,
+      "pinned": true,
       "archived": false,
-      "color": "",
+      "color": "red",
       "edited": "03/28/2021",
       "order": 0,
       "opened": false,
@@ -37,8 +37,8 @@
     },
     {
       "title": "Test",
-      "pinned": false,
-      "color": "",
+      "pinned": true,
+      "color": "blue",
       "edited": "03/28/2021",
       "labels": [],
       "type": {
@@ -50,22 +50,6 @@
       "archived": false,
       "opened": false,
       "id": 1
-    },
-    {
-      "title": "",
-      "pinned": false,
-      "color": "",
-      "edited": "3/3/2021",
-      "labels": [],
-      "type": {
-        "list": true,
-        "checklist": false
-      },
-      "list": "somketjing",
-      "selected": false,
-      "archived": false,
-      "opened": false,
-      "id": 2
     },
     {
       "title": "Checklist check",
@@ -101,22 +85,6 @@
       "archived": false,
       "opened": false,
       "id": 3
-    },
-    {
-      "title": "",
-      "pinned": false,
-      "color": "",
-      "edited": "6/3/2021",
-      "labels": [],
-      "type": {
-        "list": true,
-        "checklist": false
-      },
-      "list": "TOP ONE",
-      "selected": false,
-      "archived": false,
-      "opened": false,
-      "id": 4
     }
   ]
 }

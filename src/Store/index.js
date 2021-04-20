@@ -8,6 +8,7 @@ export const store = new Vuex.Store({
     state: {
         notes: [],
         date: new Date(),
+        colorOptions: ['red', 'green', 'blue'],
     },
     mutations: {
         SET_NOTES(state, notes){
@@ -65,7 +66,6 @@ export const store = new Vuex.Store({
             note.archived = false;
             note.opened = false;
 
-            console.log("Note data: ", {note});
             NoteService.createNote(note)
             .then(resp => {
                 commit("SET_NOTE", resp.data);
@@ -105,12 +105,12 @@ export const store = new Vuex.Store({
 
     },
     getters: {
-        // getDonenotes: (state)=>{
-        //     // This will no longer work...
-        //     return state.notes.filter(note=> note.checked);
-        // },
-        // donenotesCount: (state, getters) => {
-        //     return getters.getDonenotes.length;
-        // }
+        pinnedNotes: (state)=>{
+            return state.notes.filter(note=> note.pinned);
+        },
+        otherNotes: (state)=>{
+            return state.notes.filter(note => !note.pinned)
+        },
+ 
     }
 });

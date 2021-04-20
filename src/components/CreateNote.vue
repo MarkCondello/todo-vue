@@ -1,5 +1,5 @@
 <template>
-    <m-card class="card" :class="note.color">
+    <m-card :class="note.color">
         <m-card-primary-action>
             <m-layout-grid style="width:100%;">
                 <template v-if="opened">
@@ -59,6 +59,7 @@
                 <m-icon-button icon="person_add_alt_1" title="Add user" class="material-icons-outlined">
                 </m-icon-button>
 
+                <!-- Split this out to its own component -->
                 <m-icon-button 
                 icon="palette" 
                 title="Colour palette" 
@@ -70,16 +71,13 @@
                             :open="showPalette" 
                             class="color-palette-panel"
                         >
-                            <!-- Convert this to a loop of the colorOptions -->
                             <a 
                             v-for="(color, index) in colorOptions"
                             :key="index+color"
-                            :title="color" 
+                            :title="ucFirst(color)" 
                             @click.stop="showPalette=false; note.color=`${color}`"
                             :class="color"></a>
-
-                            <!-- <button type="button" title="Blue" @click="note.color='blue'" class="blue"></button> -->
-                        </m-menu-surface>
+                         </m-menu-surface>
                     </m-menu-anchor>
                 </m-icon-button>
 
@@ -99,6 +97,7 @@
 <script>
 
 import checkList from './CheckList';
+import {mapState} from 'vuex';
  export default {
     components:{ checkList},
     data() {
@@ -117,11 +116,11 @@ import checkList from './CheckList';
             },
             opened: false,
             showPalette: false,
-            colorOptions : ['red', ' green', 'blue'],
-
         }
     },
-    created(){},
+    computed: {
+        ...mapState(['colorOptions']),
+    },
     methods: {
         handleClose(){
             this.opened=false;
@@ -179,7 +178,6 @@ import checkList from './CheckList';
                     }
                 ],
             });
-
             //send this to child checklist component
             this.$nextTick(()=>{
                 let index = this.note.list.length ? this.note.list.length - 1 : 0;
@@ -193,7 +191,11 @@ import checkList from './CheckList';
                 this.addCheckListItem();//ensure there is always a list item set
             }
         },
+        ucFirst(word){
+           return word.slice(0,1).toUpperCase() + word.slice(1);
+        }
     },
+ 
     watch: {
         opened(value){
              if(value && this.note.type.list){
